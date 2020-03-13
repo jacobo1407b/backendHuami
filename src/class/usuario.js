@@ -57,9 +57,10 @@ class user{
     }
 
     async encontrar(huella){
-        const encontrado = await Persona.findOne({ huella: huella });
-        const {user, nombre, apellido,_id}= encontrado;
-        if (encontrado) {
+        const encontrado = await Persona.find({'huella': {'$regex': huella}})
+        console.log(encontrado);
+        if (encontrado[0] != undefined || encontrado[0]!=null) {
+            const {user, nombre, apellido,_id}= encontrado[0];
             const guardar = new End({nombre,user,apellido,idper:_id});
             await guardar.save();
             return true;
